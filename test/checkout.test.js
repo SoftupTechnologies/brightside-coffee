@@ -104,7 +104,7 @@ test("a fault of the shop shows the message and a reference, and logs one ERROR 
 });
 
 test('the demo panel is on the checkout only with DEMO_MODE=1', async (t) => {
-  const plain = await startShop();
+  const plain = await startShop({ env: { AKESO_PROJECT_KEY: 'not-a-key' } }); // a refused key leaves the button out, whatever akeso.json holds
   t.after(plain.close);
   assert.ok(!(await (await plain.get('/checkout')).text()).includes('demo-panel'));
 
@@ -118,7 +118,7 @@ test('the demo panel is on the checkout only with DEMO_MODE=1', async (t) => {
 });
 
 test('the report button is on every page when the Akeso service and project key are set', async (t) => {
-  const plain = await startShop();
+  const plain = await startShop({ env: { AKESO_PROJECT_KEY: 'not-a-key' } }); // a refused key leaves the button out, whatever akeso.json holds
   t.after(plain.close);
   assert.ok(!(await (await plain.get('/')).text()).includes('Akeso.mount'));
 
