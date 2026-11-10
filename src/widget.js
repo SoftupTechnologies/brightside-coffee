@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { escapeHtml } from './html.js';
 
 /**
@@ -22,12 +23,24 @@ function originOf(value) {
 }
 
 /**
- * The report button's tags for every page, from AKESO_SERVICE_URL and AKESO_PROJECT_KEY (the project's public key,
- * `shpk_…`). Empty when either is missing or one the widget would refuse, so the shop runs without Akeso.
+ * akeso.json at the shop's root: `{ "service": "https://…", "projectKey": "shpk_…" }`, the report button's settings
+ * where the environment gives none. A project's public key is no secret: it is in every page the button is on.
  */
-export function widgetTags(env = process.env) {
-  const service = originOf(env.AKESO_SERVICE_URL?.trim() ?? '');
-  const project = env.AKESO_PROJECT_KEY?.trim() ?? '';
+function fileSettings() {
+  try {
+    return JSON.parse(readFileSync(new URL('../akeso.json', import.meta.url), 'utf8'));
+  } catch {
+    return {};
+  }
+}
+
+/**
+ * The report button's tags for every page, from AKESO_SERVICE_URL and AKESO_PROJECT_KEY (the project's public key,
+ * `shpk_…`), else akeso.json. Empty when either is missing or one the widget would refuse, so the shop runs without Akeso.
+ */
+export function widgetTags(env = process.env, file = fileSettings()) {
+  const service = originOf(env.AKESO_SERVICE_URL?.trim() || String(file.service ?? ''));
+  const project = env.AKESO_PROJECT_KEY?.trim() || String(file.projectKey ?? '').trim();
   if (!service || !PROJECT_KEY.test(project)) return '';
   const version = env.AKESO_WIDGET_VERSION?.trim() || WIDGET_VERSION;
   const integrity = env.AKESO_WIDGET_INTEGRITY?.trim() ?? (version === WIDGET_VERSION ? WIDGET_INTEGRITY : '');
