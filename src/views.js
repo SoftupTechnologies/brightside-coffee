@@ -61,8 +61,6 @@ ${failure ? html`<div class="alert" role="alert" data-ref="${failure.ref}">
   <strong>Sorry, we could not place your order.</strong>
   <p class="alert-message">${failure.message}</p>
   <p>Reference <code>${failure.ref}</code>. You have not been charged; our team has been told.</p>
-  <p class="alert-actions" hidden><button type="button" class="button" data-report-problem>Report this problem</button>
-  <span class="alert-hint" data-report-hint></span></p>
 </div>` : ''}
 ${errors.coupon || errors.deliveryDate ? html`<div class="notice" role="status">${errors.coupon ?? errors.deliveryDate}</div>` : ''}
 <form class="checkout" method="post" action="checkout" novalidate>
