@@ -13,8 +13,8 @@ test('the report button takes its settings from the environment, else akeso.json
   assert.equal(widgetTags({}, {}), '');
 });
 
-test('AKESO_REPORT_BUTTON=off leaves the button out, as Akeso\'s validation sets it, and a missing script never throws', () => {
+test('REPORT_BUTTON=off leaves the button out, as Akeso\'s validation sets it, and a missing script never throws', () => {
   const file = { service: 'https://akeso.softup.co', projectKey: 'shpk_demoKey123' };
-  assert.equal(widgetTags({ AKESO_REPORT_BUTTON: 'off' }, file), '');
+  assert.equal(widgetTags({ REPORT_BUTTON: 'off' }, file), '');
   assert.match(widgetTags({}, file), /if \(window\.Akeso\) Akeso\.mount\(/);
 });

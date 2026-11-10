@@ -73,7 +73,7 @@
       "DEMO_CLOUDWATCH_ENDPOINT": "",
       "DEMO_LOG_GROUP": "",
       "DEMO_MODE": "0",
-      "AKESO_REPORT_BUTTON": "off"
+      "REPORT_BUTTON": "off"
     },
     "forbiddenEnv": [
       "AWS_ACCESS_KEY_ID",

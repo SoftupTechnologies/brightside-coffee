@@ -36,11 +36,13 @@ function fileSettings() {
 
 /**
  * The report button's tags for every page, from AKESO_SERVICE_URL and AKESO_PROJECT_KEY (the project's public key,
- * `shpk_…`), else akeso.json; AKESO_REPORT_BUTTON=off leaves it out. Empty when either is missing or one the widget would refuse, so the shop runs without Akeso.
+ * `shpk_…`), else akeso.json; REPORT_BUTTON=off leaves it out. Empty when either is missing or one the widget would refuse, so the shop runs without Akeso.
  */
 export function widgetTags(env = process.env, file = fileSettings()) {
-  // AKESO_REPORT_BUTTON=off leaves it out: Akeso's validation runs the shop where akeso.softup.co cannot be reached.
-  if ((env.AKESO_REPORT_BUTTON ?? '').trim().toLowerCase() === 'off') return '';
+  // REPORT_BUTTON=off leaves it out: Akeso's validation sets it (a kill switch of selfheal.config.json), since it runs the
+  // shop where akeso.softup.co cannot be reached. Akeso reserves AKESO_ names in a product's environment, so the switch
+  // has none; AKESO_REPORT_BUTTON is read too, for a shop started by hand.
+  if ([env.REPORT_BUTTON, env.AKESO_REPORT_BUTTON].some((value) => (value ?? '').trim().toLowerCase() === 'off')) return '';
   const service = originOf(env.AKESO_SERVICE_URL?.trim() || String(file.service ?? ''));
   const project = env.AKESO_PROJECT_KEY?.trim() || String(file.projectKey ?? '').trim();
   if (!service || !PROJECT_KEY.test(project)) return '';

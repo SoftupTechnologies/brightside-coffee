@@ -119,7 +119,7 @@ test('the demo panel is on the checkout only with DEMO_MODE=1', async (t) => {
 
 test('the report button is on every page when the Akeso service and project key are set', async (t) => {
   // Turned off, as Akeso's validation does (selfheal.config.json's kill switches): no button, whatever akeso.json says.
-  const plain = await startShop({ env: { AKESO_REPORT_BUTTON: 'off' } });
+  const plain = await startShop({ env: { REPORT_BUTTON: 'off' } });
   t.after(plain.close);
   assert.ok(!(await (await plain.get('/')).text()).includes('Akeso.mount'));
 
