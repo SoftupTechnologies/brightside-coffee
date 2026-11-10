@@ -55,3 +55,7 @@ test('an invoice adds up its order and refuses a negative total', () => {
   assert.throws(() => createInvoice({ ...order, discountCents: 4000, totalCents: -960 }),
     (error) => error instanceof InvoiceTotalError && error.message === 'total is negative for order 1042');
 });
+
+test('a country without a shipping rate is the customer’s mistake, not a crash', () => {
+  assert.throws(() => shippingCost('CH', 1), (error) => error instanceof CheckoutInputError && error.field === 'country');
+});
