@@ -2,21 +2,28 @@ import { COUNTRIES, euros } from './catalog.js';
 import { html, raw } from './html.js';
 import { SCENARIOS, scenarioInput } from './scenarios.js';
 
-/** The page around every view: header, the view, footer, and the report button when it is configured. */
-export function layout({ title, body, widget = '', active = '' }) {
+/** BASE_PATH as the page's <base>: `/demo/` for BASE_PATH=/demo, `/` without it. */
+export const basePath = (env = process.env) => `${(env.BASE_PATH ?? '').trim().replace(/\/+$/, '').replace(/^(?!\/)(?=.)/, '/')}/`;
+
+/**
+ * The page around every view: header, the view, footer, and the report button when it is configured. Its links are
+ * relative to <base>, BASE_PATH (such as /demo, where a proxy serves the shop under a path) or the root.
+ */
+export function layout({ title, body, widget = '', active = '', base = basePath() }) {
   return `<!doctype html>\n${html`<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title} · Brightside Coffee</title>
-<link rel="stylesheet" href="/static/style.css">
+<base href="${base}">
+<link rel="stylesheet" href="static/style.css">
 </head>
 <body data-role="CUSTOMER">
 <header class="site-header">
-  <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">☀</span> Brightside Coffee</a>
+  <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">☀</span> Brightside Coffee</a>
   <nav>
-    <a href="/" ${active === 'shop' ? raw('aria-current="page"') : ''}>Shop</a>
-    <a href="/checkout" ${active === 'checkout' ? raw('aria-current="page"') : ''}>Checkout</a>
+    <a href="./" ${active === 'shop' ? raw('aria-current="page"') : ''}>Shop</a>
+    <a href="checkout" ${active === 'checkout' ? raw('aria-current="page"') : ''}>Checkout</a>
   </nav>
 </header>
 <main>${body}</main>
@@ -36,7 +43,7 @@ export function homePage(products) {
     <h2>${product.name}</h2>
     <p>${product.description}</p>
     <p class="price">${euros(product.priceCents)}</p>
-    <a class="button" href="/checkout?product=${product.sku}">Buy</a>
+    <a class="button" href="checkout?product=${product.sku}">Buy</a>
   </article>`)}
 </section>`;
 }
@@ -58,7 +65,7 @@ ${failure ? html`<div class="alert" role="alert" data-ref="${failure.ref}">
   <span class="alert-hint" data-report-hint></span></p>
 </div>` : ''}
 ${errors.coupon || errors.deliveryDate ? html`<div class="notice" role="status">${errors.coupon ?? errors.deliveryDate}</div>` : ''}
-<form class="checkout" method="post" action="/checkout" novalidate>
+<form class="checkout" method="post" action="checkout" novalidate>
   <fieldset>
     <legend>Your coffee</legend>
     <label>Coffee
@@ -111,7 +118,7 @@ function demoPanel(now) {
   ${SCENARIOS.map((s) => html`<button type="button" data-scenario="${s.n}" title="${s.title}">${s.n}</button>`)}
 </aside>
 <script type="application/json" id="demo-scenarios">${raw(JSON.stringify(inputs).replace(/</g, '\\u003c'))}</script>
-<script src="/static/demo-panel.js" defer></script>`;
+<script src="static/demo-panel.js" defer></script>`;
 }
 
 export function orderPage({ order, product, invoice }) {
@@ -125,10 +132,10 @@ export function orderPage({ order, product, invoice }) {
     <tr class="total"><th>Total</th><td>${euros(order.totalCents)}</td></tr>
   </table>
   ${invoice ? html`<p class="muted">Invoice ${invoice.number}</p>` : ''}
-  <a class="button" href="/">Back to the shop</a>
+  <a class="button" href="./">Back to the shop</a>
 </div>`;
 }
 
 export function messagePage(heading, text) {
-  return html`<h1>${heading}</h1><p>${text}</p><p><a class="button" href="/">Back to the shop</a></p>`;
+  return html`<h1>${heading}</h1><p>${text}</p><p><a class="button" href="./">Back to the shop</a></p>`;
 }

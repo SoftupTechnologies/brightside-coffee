@@ -50,7 +50,7 @@ export function createApp({ store, logger, env = process.env, build = null, now 
     try {
       const { order } = await placeOrder(store, form, { now: now() });
       logger.info('order placed', { order: order.id, total_cents: order.totalCents });
-      res.writeHead(303, { location: `/orders/${order.id}` });
+      res.writeHead(303, { location: `orders/${order.id}` });
       return res.end();
     } catch (error) {
       if (error instanceof CheckoutInputError) {

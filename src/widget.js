@@ -35,5 +35,5 @@ export function widgetTags(env = process.env) {
   return `<div id="akeso"></div>
 <script src="${escapeHtml(`${service}/widget/${version}/akeso-widget.js`)}"${integrity ? ` integrity="${escapeHtml(integrity)}"` : ''} crossorigin="anonymous"></script>
 <script>window.akesoReportButton = Akeso.mount(document.getElementById('akeso'), ${options});</script>
-<script src="/static/report-problem.js" defer></script>`;
+<script src="static/report-problem.js" defer></script>`;
 }

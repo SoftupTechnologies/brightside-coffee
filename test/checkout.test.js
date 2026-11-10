@@ -18,7 +18,7 @@ test('the shop page lists every coffee with its price and a link to buy it', asy
   for (const [name, price, sku] of [['House Blend', '€12.50', 'house-blend'], ['Ethiopia Guji', '€15.90', 'ethiopia-guji'], ['Midnight Decaf', '€13.90', 'midnight-decaf']]) {
     assert.ok(page.includes(name), name);
     assert.ok(page.includes(price), price);
-    assert.ok(page.includes(`href="/checkout?product=${sku}"`), sku);
+    assert.ok(page.includes(`href="checkout?product=${sku}"`), sku);
   }
 });
 
@@ -27,7 +27,7 @@ test('the checkout preselects the coffee it was opened for', async (t) => {
   t.after(shop.close);
   const page = await (await shop.get('/checkout?product=ethiopia-guji')).text();
   assert.match(page, /<option value="ethiopia-guji" selected>/);
-  assert.match(page, /<form class="checkout" method="post" action="\/checkout"/);
+  assert.match(page, /<form class="checkout" method="post" action="checkout"/);
 });
 
 test('a normal order is placed, invoiced and shown', async (t) => {
@@ -35,7 +35,7 @@ test('a normal order is placed, invoiced and shown', async (t) => {
   t.after(shop.close);
   const response = await shop.post('/checkout', normalOrder());
   assert.equal(response.status, 303);
-  assert.equal(response.headers.get('location'), '/orders/1001');
+  assert.equal(response.headers.get('location'), 'orders/1001', 'relative, so it works under BASE_PATH too');
 
   const page = await (await shop.get('/orders/1001')).text();
   assert.ok(page.includes('Order <strong>1001</strong> is placed'));
@@ -141,4 +141,10 @@ test('an unknown page is a 404 and static files are served', async (t) => {
   const css = await shop.get('/static/style.css');
   assert.equal(css.status, 200);
   assert.match(css.headers.get('content-type'), /^text\/css/);
+});
+
+test('under BASE_PATH (a proxy serving the shop at /demo) every page names its base, so its relative links stay under it', async (t) => {
+  const { layout } = await import('../src/views.js');
+  assert.match(layout({ title: 'x', body: '', base: '/demo/' }), /<base href="\/demo\/">/);
+  assert.match(layout({ title: 'x', body: '' }), /<base href="\/">/);
 });
