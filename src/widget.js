@@ -36,9 +36,11 @@ function fileSettings() {
 
 /**
  * The report button's tags for every page, from AKESO_SERVICE_URL and AKESO_PROJECT_KEY (the project's public key,
- * `shpk_…`), else akeso.json. Empty when either is missing or one the widget would refuse, so the shop runs without Akeso.
+ * `shpk_…`), else akeso.json; AKESO_REPORT_BUTTON=off leaves it out. Empty when either is missing or one the widget would refuse, so the shop runs without Akeso.
  */
 export function widgetTags(env = process.env, file = fileSettings()) {
+  // AKESO_REPORT_BUTTON=off leaves it out: Akeso's validation runs the shop where akeso.softup.co cannot be reached.
+  if ((env.AKESO_REPORT_BUTTON ?? '').trim().toLowerCase() === 'off') return '';
   const service = originOf(env.AKESO_SERVICE_URL?.trim() || String(file.service ?? ''));
   const project = env.AKESO_PROJECT_KEY?.trim() || String(file.projectKey ?? '').trim();
   if (!service || !PROJECT_KEY.test(project)) return '';
@@ -47,5 +49,5 @@ export function widgetTags(env = process.env, file = fileSettings()) {
   const options = JSON.stringify({ service, project }).replace(/</g, '\\u003c');
   return `<div id="akeso"></div>
 <script src="${escapeHtml(`${service}/widget/${version}/akeso-widget.js`)}"${integrity ? ` integrity="${escapeHtml(integrity)}"` : ''} crossorigin="anonymous"></script>
-<script>Akeso.mount(document.getElementById('akeso'), ${options});</script>`;
+<script>if (window.Akeso) Akeso.mount(document.getElementById('akeso'), ${options});</script>`;
 }
