@@ -1,0 +1,21 @@
+{
+  "name": "brightside-coffee",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Brightside Coffee: a small online coffee shop with a product page and a checkout.",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "build": "node scripts/check.js",
+    "test": "node --test test/*.test.js",
+    "db:setup": "node scripts/db-setup.js",
+    "demo:fire": "node scripts/demo-fire.js",
+    "demo:reset": "node scripts/demo-reset.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-cloudwatch-logs": "^3.700.0",
+    "pg": "^8.13.1"
+  }
+}

@@ -1,0 +1,66 @@
+# DESTRUCTIVE, for the demo repository only. Puts the buggy code back for the next demo run: force-pushes the
+# commit tagged `demo-start` to main, so every fix merged since leaves main for good. Optionally closes the open pull
+# requests, whose fixes no longer apply. Run it from Actions → "Reset the demo" → Run workflow, typing `reset main`.
+name: Reset the demo
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: Type "reset main" to force-push the demo-start tag to main
+        required: true
+        type: string
+      close_pull_requests:
+        description: Also close every open pull request
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: reset-demo
+  cancel-in-progress: false
+
+jobs:
+  reset:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the confirmation
+        if: inputs.confirm != 'reset main'
+        run: |
+          echo "::error::Type exactly: reset main"
+          exit 1
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: Force-push demo-start to main
+        run: |
+          set -euo pipefail
+          git fetch --force --tags origin
+          if ! target="$(git rev-parse --verify --quiet 'demo-start^{commit}')"; then
+            echo "::error::There is no tag demo-start. Tag the buggy commit once: git tag demo-start <commit> && git push origin demo-start"
+            exit 1
+          fi
+          current="$(git rev-parse HEAD)"
+          if [ "$current" = "$target" ]; then
+            echo "main is already at demo-start ($target)."
+            exit 0
+          fi
+          git push --force-with-lease="refs/heads/main:$current" origin "$target:refs/heads/main"
+          echo "main moved from $current back to demo-start ($target)." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Close the open pull requests
+        if: inputs.close_pull_requests
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for pr in $(gh pr list --repo "$GITHUB_REPOSITORY" --state open --json number --jq '.[].number'); do
+            gh pr close "$pr" --repo "$GITHUB_REPOSITORY" --comment "Closed by the demo reset: main is back at demo-start."
+          done

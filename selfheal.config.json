@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "product": "softuptechnologies-brightside-coffee",
+  "appDir": ".",
+  "runtime": { "node": "22", "image": "default" },
+  "commands": { "test": "npm test", "typecheck": "npm run build" },
+  "database": { "kind": "postgres", "image": "postgres:17", "localNamePattern": "^brightside_" },
+  "server": { "healthPath": "/health", "buildStampField": "build", "startupTimeoutSeconds": 60 },
+  "files": {
+    "ui": ["src/**", "public/**"],
+    "protected": [".github/workflows/reset-demo.yml", "scripts/demo-reset.js", "selfheal.config.json"]
+  },
+  "validation": {
+    "viewports": ["desktop", "mobile"],
+    "languages": ["en"],
+    "accounts": { "CUSTOMER": { "email": "mia.hoffmann@example.com" } },
+    "signIn": [{ "goto": "/" }],
+    "identity": { "dom": { "selector": "body[data-role]", "attribute": "data-role" } },
+    "requiredRoutes": { "CUSTOMER": ["/", "/checkout"] },
+    "routes": { "CUSTOMER": ["/", "/checkout"] }
+  },
+  "environment": {
+    "killSwitches": { "DEMO_CLOUDWATCH_ENDPOINT": "", "DEMO_LOG_GROUP": "", "DEMO_MODE": "0" },
+    "forbiddenEnv": ["AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "AWS_SESSION_TOKEN", "AWS_PROFILE"]
+  }
+}
