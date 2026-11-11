@@ -12,7 +12,7 @@ const STATIC_TYPES = { '.css': 'text/css; charset=utf-8', '.js': 'text/javascrip
 const MAX_BODY_BYTES = 32 * 1024;
 
 /** The checkout form's fields, as the browser sends them. */
-const FORM_FIELDS = ['product', 'quantity', 'sample', 'coupon', 'name', 'email', 'phone', 'address', 'country', 'deliveryDate'];
+const FORM_FIELDS = ['product', 'quantity', 'sample', 'coupon', 'firstName', 'lastName', 'email', 'phone', 'address', 'country', 'deliveryDate'];
 
 async function readForm(req) {
   let size = 0;

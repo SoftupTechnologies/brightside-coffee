@@ -7,13 +7,13 @@ INSERT INTO products (sku, name, description, price_cents, stock) VALUES
   ('midnight-decaf', 'Midnight Decaf', 'Swiss-water decaf with all the body and none of the buzz. Ground for filter, 250 g.', 1390, 60)
 ON CONFLICT (sku) DO NOTHING;
 
-INSERT INTO customers (id, name, email, phone, country, created_at) VALUES
-  (1, 'Anna Becker', 'anna.becker@example.com', '+4930123456', 'DE', now() - interval '40 days'),
-  (2, 'Lukas Gruber', 'lukas.gruber@example.com', NULL, 'AT', now() - interval '35 days'),
-  (3, 'Sanne de Vries', 'sanne.devries@example.com', '+31201234567', 'NL', now() - interval '30 days'),
-  (4, 'Jonas Weber', 'jonas.weber@example.com', '+4989765432', 'DE', now() - interval '21 days'),
-  (5, 'Camille Martin', 'camille.martin@example.com', NULL, 'FR', now() - interval '18 days'),
-  (6, 'Giulia Rossi', 'giulia.rossi@example.com', '+390612345678', 'IT', now() - interval '7 days')
+INSERT INTO customers (id, first_name, last_name, email, phone, country, created_at) VALUES
+  (1, 'Anna', 'Becker', 'anna.becker@example.com', '+4930123456', 'DE', now() - interval '40 days'),
+  (2, 'Lukas', 'Gruber', 'lukas.gruber@example.com', NULL, 'AT', now() - interval '35 days'),
+  (3, 'Sanne', 'de Vries', 'sanne.devries@example.com', '+31201234567', 'NL', now() - interval '30 days'),
+  (4, 'Jonas', 'Weber', 'jonas.weber@example.com', '+4989765432', 'DE', now() - interval '21 days'),
+  (5, 'Camille', 'Martin', 'camille.martin@example.com', NULL, 'FR', now() - interval '18 days'),
+  (6, 'Giulia', 'Rossi', 'giulia.rossi@example.com', '+390612345678', 'IT', now() - interval '7 days')
 ON CONFLICT (email) DO NOTHING;
 
 INSERT INTO orders (id, customer_id, product_sku, quantity, sample_bag, coupon_code, address, country, delivery_date,

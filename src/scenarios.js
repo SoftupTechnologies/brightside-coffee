@@ -24,7 +24,7 @@ export function normalOrder(now = new Date()) {
     quantity: '2',
     coupon: '',
     sample: '',
-    name: 'Mia Hoffmann',
+    firstName: 'Mia', lastName: 'Hoffmann',
     email: 'mia.hoffmann@example.com',
     phone: '+49 30 1234 5678',
     address: 'Kastanienallee 7, 10435 Berlin',
@@ -37,27 +37,27 @@ export const SCENARIOS = [
   {
     n: 1,
     title: 'Coupon BREW15',
-    input: () => ({ name: 'Lena Fischer', email: 'lena.fischer@example.com', coupon: 'BREW15' })
+    input: () => ({ firstName: 'Lena', lastName: 'Fischer', email: 'lena.fischer@example.com', coupon: 'BREW15' })
   },
   {
     n: 2,
     title: 'Free sample bag',
-    input: () => ({ name: 'Tom Schneider', email: 'tom.schneider@example.com', sample: 'on' })
+    input: () => ({ firstName: 'Tom', lastName: 'Schneider', email: 'tom.schneider@example.com', sample: 'on' })
   },
   {
     n: 3,
     title: 'Date typed as DD/MM/YYYY',
-    input: (now) => ({ name: 'Sofia Wagner', email: 'sofia.wagner@example.com', deliveryDate: europeanDate(now) })
+    input: (now) => ({ firstName: 'Sofia', lastName: 'Wagner', email: 'sofia.wagner@example.com', deliveryDate: europeanDate(now) })
   },
   {
     n: 4,
     title: 'No phone number',
-    input: () => ({ name: 'Noah Klein', email: 'noah.klein@example.com', phone: '' })
+    input: () => ({ firstName: 'Noah', lastName: 'Klein', email: 'noah.klein@example.com', phone: '' })
   },
   {
     n: 5,
     title: 'Ship to Switzerland',
-    input: () => ({ name: 'Elif Meier', email: 'elif.meier@example.com', address: 'Bahnhofstrasse 1, 8001 Zürich', country: 'CH' })
+    input: () => ({ firstName: 'Elif', lastName: 'Meier', email: 'elif.meier@example.com', address: 'Bahnhofstrasse 1, 8001 Zürich', country: 'CH' })
   }
 ];
 

@@ -81,8 +81,11 @@ ${errors.coupon || errors.deliveryDate ? html`<div class="notice" role="status">
   </fieldset>
   <fieldset>
     <legend>Delivery</legend>
-    <label>Full name
-      <input name="name" value="${form.name ?? ''}" autocomplete="name">${field(errors, 'name')}
+    <label>First name
+      <input name="firstName" value="${form.firstName ?? ''}" autocomplete="given-name">${field(errors, 'firstName')}
+    </label>
+    <label>Last name
+      <input name="lastName" value="${form.lastName ?? ''}" autocomplete="family-name">${field(errors, 'lastName')}
     </label>
     <label>Email
       <input name="email" type="email" value="${form.email ?? ''}" autocomplete="email">${field(errors, 'email')}
