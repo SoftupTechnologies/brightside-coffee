@@ -36,7 +36,7 @@ npm start
 | `DEMO_LOG_STREAM` | The log stream (default `checkout-<host name>`), created when missing |
 | `AWS_REGION`, `AWS_PROFILE` (or `AWS_ACCESS_KEY_ID`...) | Credentials and region for real CloudWatch Logs, as the AWS SDK reads them |
 | `AKESO_SERVICE_URL`, `AKESO_PROJECT_KEY` | The Akeso service and the project's public key (`shpk_…`): with both, every page has the report button |
-| `AKESO_WIDGET_VERSION`, `AKESO_WIDGET_INTEGRITY` | Another report button release and its SRI hash (default 0.3.0 and its hash; an empty integrity loads it without SRI) |
+| `AKESO_WIDGET_VERSION`, `AKESO_WIDGET_INTEGRITY` | Another report button release and its SRI hash (default 0.4.0 and its hash; an empty integrity loads it without SRI) |
 | `TEST_DATABASE_URL` | Runs test/postgres.test.js against that Postgres (CI sets it); skipped otherwise |
 | `DEMO_URL` | Where `npm run demo:fire` sends orders (default `http://localhost:$PORT`) |
 

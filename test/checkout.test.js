@@ -129,7 +129,7 @@ test('the report button is on every page when the Akeso service and project key 
   t.after(shop.close);
   for (const path of ['/', '/checkout']) {
     const page = await (await shop.get(path)).text();
-    assert.ok(page.includes('<script src="http://localhost:3000/widget/0.3.0/akeso-widget.js" integrity="sha384-'), path);
+    assert.ok(page.includes('<script src="http://localhost:3000/widget/0.4.0/akeso-widget.js" integrity="sha384-'), path);
     assert.ok(page.includes(`Akeso.mount(document.getElementById('akeso'), {"service":"http://localhost:3000","project":"shpk_demo123"});`), path);
   }
 });

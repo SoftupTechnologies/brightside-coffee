@@ -6,8 +6,8 @@ import { escapeHtml } from './html.js';
  * `<service>/widget/<version>/akeso-widget.js.sri`). AKESO_WIDGET_VERSION and AKESO_WIDGET_INTEGRITY override them;
  * the Report button page of the Akeso dashboard shows the current pair.
  */
-export const WIDGET_VERSION = '0.3.0';
-export const WIDGET_INTEGRITY = 'sha384-nBlQzobeNEibKx1wE4nxsTh+++r6qPqiLgePHhoj1zjwQdUaFrgUPeUU93l7TXqH';
+export const WIDGET_VERSION = '0.4.0';
+export const WIDGET_INTEGRITY = 'sha384-9NLszf6DnUCBkYzOx8aVlsbVTh1vIhkoL6HCpY/wtaKIkVftmGyuzt3SSv9Mdqfg';
 
 const PROJECT_KEY = /^shpk_[A-Za-z0-9_-]{1,64}$/;
 const LOOPBACK = new Set(['localhost', '127.0.0.1', '[::1]']);
