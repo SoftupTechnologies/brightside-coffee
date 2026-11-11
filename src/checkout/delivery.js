@@ -9,7 +9,11 @@ export function parseDeliveryDate(text) {
   if (value === '') throw new CheckoutInputError('deliveryDate', 'Pick a delivery date.');
   if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
 
-  const date = new Date(value);
+  const european = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(value);
+  const date = european ? new Date(Date.UTC(+european[3], +european[2] - 1, +european[1])) : new Date(value);
+  if (Number.isNaN(date.getTime()) || (european && date.getUTCDate() !== +european[1])) {
+    throw new CheckoutInputError('deliveryDate', 'Enter the delivery date as 2026-11-14 or 14/11/2026.');
+  }
   return date.toISOString().slice(0, 10);
 }
 
