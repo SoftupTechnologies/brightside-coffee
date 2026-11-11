@@ -55,3 +55,9 @@ test('an invoice adds up its order and refuses a negative total', () => {
   assert.throws(() => createInvoice({ ...order, discountCents: 4000, totalCents: -960 }),
     (error) => error instanceof InvoiceTotalError && error.message === 'total is negative for order 1042');
 });
+
+test('formatPhone: empty gives no number, a number without digits is a customer error', () => {
+  assert.equal(formatPhone('  '), '');
+  assert.throws(() => formatPhone('abc'), CheckoutInputError);
+  assert.equal(formatPhone('+49 30 1234 567'), '+49301234567');
+});
