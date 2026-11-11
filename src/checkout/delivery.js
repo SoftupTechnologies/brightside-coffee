@@ -7,9 +7,15 @@ import { CheckoutInputError } from './errors.js';
 export function parseDeliveryDate(text) {
   const value = (text ?? '').trim();
   if (value === '') throw new CheckoutInputError('deliveryDate', 'Pick a delivery date.');
-  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
+  const bad = () => new CheckoutInputError('deliveryDate', 'Enter the delivery date as 2026-11-14 or 14/11/2026.');
+  let y, m, d;
+  let match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (match) [, y, m, d] = match;
+  else if ((match = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(value))) [, d, m, y] = match;
+  else throw bad();
 
-  const date = new Date(value);
+  const date = new Date(Date.UTC(Number(y), Number(m) - 1, Number(d)));
+  if (Number.isNaN(date.getTime()) || date.getUTCMonth() !== Number(m) - 1 || date.getUTCDate() !== Number(d)) throw bad();
   return date.toISOString().slice(0, 10);
 }
 
