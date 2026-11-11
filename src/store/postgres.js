@@ -18,10 +18,12 @@ export function postgresStore(databaseUrl) {
       return rows;
     },
 
-    async saveCustomer({ name, email, phone, country }) {
-      const { rows } = await pool.query(`INSERT INTO customers (name, email, phone, country) VALUES ($1, $2, $3, $4)
-        ON CONFLICT (email) DO UPDATE SET name = EXCLUDED.name, phone = EXCLUDED.phone, country = EXCLUDED.country
-        RETURNING id, name, email, phone, country`, [name, email, phone, country]);
+    async saveCustomer({ firstName, lastName, email, phone, country }) {
+      const { rows } = await pool.query(`INSERT INTO customers (first_name, last_name, email, phone, country)
+        VALUES ($1, $2, $3, $4, $5)
+        ON CONFLICT (email) DO UPDATE SET first_name = EXCLUDED.first_name, last_name = EXCLUDED.last_name, phone = EXCLUDED.phone, country = EXCLUDED.country
+        RETURNING id, first_name AS "firstName", last_name AS "lastName", email, phone, country`,
+      [firstName, lastName, email, phone, country]);
       return rows[0];
     },
 

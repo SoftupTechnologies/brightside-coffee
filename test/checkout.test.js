@@ -64,10 +64,11 @@ test("the customer's mistakes are shown on the form and are not logged as errors
   const shop = await startShop();
   t.after(shop.close);
 
-  const missing = await shop.post('/checkout', { ...normalOrder(), name: ' ', email: 'not-an-email', quantity: '0' });
+  const missing = await shop.post('/checkout', { ...normalOrder(), firstName: ' ', lastName: '', email: 'not-an-email', quantity: '0' });
   assert.equal(missing.status, 400);
   const page = await missing.text();
-  assert.ok(page.includes('Tell us who the coffee is for.'));
+  assert.ok(page.includes('Tell us your first name.'));
+  assert.ok(page.includes('Tell us your last name.'));
   assert.ok(page.includes('Enter an email address'));
   assert.ok(page.includes('Order 1 to 10 bags.'));
 

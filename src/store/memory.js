@@ -20,13 +20,13 @@ export function memoryStore() {
       return PRODUCTS.map((product) => ({ ...product }));
     },
 
-    async saveCustomer({ name, email, phone, country }) {
+    async saveCustomer({ firstName, lastName, email, phone, country }) {
       let customer = customers.find((c) => c.email === email);
       if (!customer) {
         customer = { id: customers.length + 1, email, createdAt: new Date() };
         customers.push(customer);
       }
-      Object.assign(customer, { name, phone, country });
+      Object.assign(customer, { firstName, lastName, phone, country });
       return { ...customer };
     },
 

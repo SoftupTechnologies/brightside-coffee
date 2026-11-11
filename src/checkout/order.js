@@ -14,7 +14,8 @@ const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
  */
 export function checkForm(form) {
   const errors = {};
-  if (!form.name?.trim()) errors.name = 'Tell us who the coffee is for.';
+  if (!form.firstName?.trim()) errors.firstName = 'Tell us your first name.';
+  if (!form.lastName?.trim()) errors.lastName = 'Tell us your last name.';
   if (!EMAIL.test(form.email?.trim() ?? '')) errors.email = 'Enter an email address, such as anna@example.com.';
   if (!findProduct(form.product)) errors.product = 'Pick a coffee.';
   const quantity = Number(form.quantity);
@@ -44,7 +45,7 @@ export async function placeOrder(store, form, { now = new Date() } = {}) {
   const totalCents = subtotalCents - coupon.discountCents + shippingCents;
 
   const customer = await store.saveCustomer({
-    name: form.name.trim(), email: form.email.trim().toLowerCase(), phone, country: form.country
+    firstName: form.firstName.trim(), lastName: form.lastName.trim(), email: form.email.trim().toLowerCase(), phone, country: form.country
   });
   const order = await store.createOrder({
     customerId: customer.id,
